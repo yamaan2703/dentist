@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Check } from 'lucide-react';
 import heroBannerImage from '@/components/images/hero-banner.jpg';
+import aboutBannerImage from '@/components/images/about-banner.jpg';
 import { aboutDescription } from '@/lib/landing-content';
 import { MotionFade } from './motion-fade';
 
@@ -13,12 +14,12 @@ const aboutHighlights: string[] = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="bg-white px-6 py-20">
+    <section id="about" className="bg-gray-50 px-6 py-20">
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-2">
         <MotionFade className="grid max-w-[500px] grid-cols-2 gap-2">
-          <div className="relative h-[400px] overflow-hidden rounded-3xl border border-[#00B9DC]/20">
+          <div className="relative h-[400px] overflow-hidden rounded-3xl border border-gray-200">
             <Image
-              src={heroBannerImage}
+              src={aboutBannerImage}
               alt="Patient during dental consultation"
               fill
               className="object-cover object-[30%_center]"

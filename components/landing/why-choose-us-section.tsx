@@ -57,7 +57,7 @@ const rightIcons = [PhoneCall, BadgeCheck, Wrench];
 
 export function WhyChooseUsSection() {
   return (
-    <section className="relative overflow-hidden px-6 py-20">
+    <section className="relative overflow-hidden bg-gray-50 px-6 py-20">
       <div className="mx-auto w-full max-w-7xl">
         <MotionFade>
           <SectionHeading

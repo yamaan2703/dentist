@@ -1,130 +1,194 @@
 'use client';
 
 import Image from 'next/image';
-import { Menu, Phone } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Menu, Phone, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import logoImage from '@/components/images/logo.png';
 import { navItems } from '@/lib/landing-content';
-import { MotionFade } from './motion-fade';
 
 export function NavbarSection() {
-  const topNavItems = navItems.slice(0, 4);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeHref, setActiveHref] = useState('#home');
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  const desktopNavItems = useMemo(() => {
+    const firstFour = navItems.slice(0, 4);
+    return [
+      ...firstFour,
+      { label: 'Appointment', href: '#contact' },
+    ];
+  }, []);
 
   useEffect(() => {
     function handleScroll(): void {
-      setIsScrolled(window.scrollY > 80);
+      setIsScrolled(window.scrollY > 12);
+    }
+
+    function syncActiveFromHash(): void {
+      const hash = window.location.hash;
+      setActiveHref(hash && hash.length > 1 ? hash : '#home');
     }
 
     handleScroll();
+    syncActiveFromHash();
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('hashchange', syncActiveFromHash);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', syncActiveFromHash);
     };
   }, []);
 
+  useEffect(() => {
+    if (!isMobileOpen) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape') {
+        setIsMobileOpen(false);
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileOpen]);
+
   const headerClassName = isScrolled
-    ? 'fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/95 shadow-md backdrop-blur'
-    : 'fixed inset-x-0 top-0 z-50';
-
-  const desktopNavClassName = isScrolled
-    ? 'hidden items-center gap-2 rounded-full border border-black/10 bg-white p-1 shadow-sm md:flex'
-    : 'hidden items-center gap-2 rounded-full border border-white/20 bg-black/35 p-1 shadow-xl shadow-black/20 backdrop-blur md:flex';
-
-  const desktopTextClassName = isScrolled
-    ? 'text-black hover:bg-[#00B9DC]/10 hover:text-[#00B9DC]'
-    : 'text-white hover:bg-white/20 hover:text-white';
-
-  const mobileSummaryClassName = isScrolled
-    ? 'flex list-none cursor-pointer items-center justify-center rounded-full border border-black/30 bg-white p-2.5 text-black marker:content-[\'\']'
-    : 'flex list-none cursor-pointer items-center justify-center rounded-full border border-white/30 bg-black/35 p-2.5 text-white backdrop-blur marker:content-[\'\']';
-
-  const mobilePanelClassName = isScrolled
-    ? 'absolute right-0 mt-3 w-56 rounded-2xl border border-black/10 bg-white p-2 shadow-xl'
-    : 'absolute right-0 mt-3 w-56 rounded-2xl border border-white/20 bg-black/75 p-2 shadow-xl backdrop-blur';
-
-  const mobileLinkClassName = isScrolled
-    ? 'block rounded-xl px-3 py-2.5 text-sm font-medium text-black transition hover:bg-[#00B9DC]/10 hover:text-[#00B9DC]'
-    : 'block rounded-xl px-3 py-2.5 text-sm font-medium text-white transition hover:bg-white/20';
+    ? 'fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/90 shadow-sm backdrop-blur-xl'
+    : 'fixed inset-x-0 top-0 z-50 border-b border-transparent bg-white/70 backdrop-blur-xl';
 
   return (
     <header className={headerClassName}>
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a
           href="#home"
-          className="group flex items-center px-1 py-0.5 transition"
+          className="group flex items-center"
+          onClick={() => {
+            setActiveHref('#home');
+            setIsMobileOpen(false);
+          }}
         >
           <Image
             src={logoImage}
             alt="Dental Clinic logo"
             width={80}
             height={40}
-            className="h-8 w-16 object-contain"
+            className="h-9 w-auto object-contain"
             priority
           />
         </a>
-        <nav className={desktopNavClassName}>
-          {topNavItems.map((item, index) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${index === 0
-                ? isScrolled
-                  ? 'bg-[#00B9DC] text-white'
-                  : 'bg-white text-black shadow-sm'
-                : desktopTextClassName
-                }`}
-            >
-              {item.label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${desktopTextClassName}`}
-          >
-            Appointment
-          </a>
-        </nav>
-        <MotionFade className="hidden md:block">
-          <a
-            href="tel:+92XXXXXXXXXX"
-            className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${isScrolled
-              ? 'bg-[#00B9DC] text-white shadow-sm hover:bg-[#0097b4]'
-              : 'bg-white text-black shadow-lg shadow-black/20 hover:bg-[#00B9DC] hover:text-white'
-              }`}
-          >
-            <Phone size={16} />
-            Call Now
-          </a>
-        </MotionFade>
-        <details className="relative md:hidden">
-          <summary className={mobileSummaryClassName}>
-            <Menu size={18} />
-          </summary>
-          <div className={mobilePanelClassName}>
-            {navItems.map((item) => (
+
+        <nav className="hidden items-center gap-1 rounded-full border border-black/10 bg-white/70 p-1 shadow-[0_10px_30px_rgba(0,185,220,0.08)] backdrop-blur md:flex">
+          {desktopNavItems.map((item) => {
+            const isActive = activeHref === item.href;
+
+            return (
               <a
-                key={item.label}
+                key={`${item.label}-${item.href}`}
                 href={item.href}
-                className={mobileLinkClassName}
+                onClick={() => {
+                  setActiveHref(item.href);
+                }}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isActive
+                  ? 'bg-[#00B9DC] text-white shadow-sm'
+                  : 'text-[#08314a] hover:bg-[#00B9DC]/10 hover:text-[#00B9DC]'
+                  }`}
               >
                 {item.label}
               </a>
-            ))}
-            <a
-              href="tel:+92XXXXXXXXXX"
-              className={`mt-1 flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${isScrolled
-                ? 'bg-[#00B9DC] text-white hover:bg-[#0097b4]'
-                : 'bg-white text-black hover:bg-[#00B9DC] hover:text-white'
-                }`}
-            >
-              <Phone size={15} />
-              Call Now
-            </a>
-          </div>
-        </details>
+            );
+          })}
+        </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <a
+            href="#contact"
+            className="inline-flex items-center rounded-full bg-[#00B9DC] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0097b4]"
+            onClick={() => {
+              setActiveHref('#contact');
+            }}
+          >
+            Book Now
+          </a>
+        </div>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[#08314a] shadow-sm transition hover:border-[#00B9DC]/35 hover:text-[#00B9DC]"
+            aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileOpen}
+            onClick={() => {
+              setIsMobileOpen((value) => !value);
+            }}
+          >
+            {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
+
+      {isMobileOpen ? (
+        <div className="md:hidden">
+          <button
+            type="button"
+            className="fixed inset-0 z-40 bg-black/30"
+            aria-label="Close menu overlay"
+            onClick={() => {
+              setIsMobileOpen(false);
+            }}
+          />
+          <div className="fixed inset-x-4 top-[72px] z-50 rounded-2xl border border-black/10 bg-white p-3 shadow-xl">
+            <div className="space-y-1">
+              {navItems.map((item) => {
+                const isActive = activeHref === item.href;
+
+                return (
+                  <a
+                    key={`mobile-${item.label}-${item.href}`}
+                    href={item.href}
+                    className={`block rounded-xl px-3 py-3 text-sm font-semibold transition ${isActive
+                      ? 'bg-[#00B9DC]/10 text-[#00B9DC]'
+                      : 'text-[#08314a] hover:bg-black/[0.03]'
+                      }`}
+                    onClick={() => {
+                      setActiveHref(item.href);
+                      setIsMobileOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+              <a
+                href="#contact"
+                className="block rounded-xl px-3 py-3 text-sm font-semibold text-[#00B9DC] hover:bg-[#00B9DC]/10"
+                onClick={() => {
+                  setActiveHref('#contact');
+                  setIsMobileOpen(false);
+                }}
+              >
+                Appointment
+              </a>
+            </div>
+            <div className="mt-3 grid gap-2 border-t border-black/10 pt-3">
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-4 py-3 text-sm font-semibold text-[#08314a] transition hover:border-[#00B9DC]/35 hover:text-[#00B9DC]"
+                onClick={() => {
+                  setActiveHref('#contact');
+                  setIsMobileOpen(false);
+                }}
+              >
+                Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

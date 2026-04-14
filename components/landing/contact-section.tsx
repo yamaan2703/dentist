@@ -12,7 +12,7 @@ const contactIcons = {
 
 export function ContactSection() {
   return (
-    <section id="contact" className="px-6 py-24">
+    <section id="contact" className="bg-gray-50 px-6 py-24">
       <div className="mx-auto w-full max-w-7xl">
         <MotionFade>
           <SectionHeading
@@ -25,7 +25,7 @@ export function ContactSection() {
           delay={0.1}
           className="relative overflow-hidden "
         >
-          <div className="pointer-events-none absolute inset-0 bg-white" />
+          <div className="pointer-events-none absolute inset-0" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_1.05fr]">
             <div className="space-y-3">
               <div className="rounded-xl p-5">
@@ -42,7 +42,7 @@ export function ContactSection() {
                 return (
                   <div
                     key={item.label}
-                    className="group bg-white p-3 transition-all duration-300 hover:-translate-y-0.5"
+                    className="group p-3 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-start gap-3">
