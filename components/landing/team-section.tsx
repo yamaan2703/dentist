@@ -1,21 +1,26 @@
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
-import heroBannerImage from '@/components/images/hero-banner.jpg';
+import type { StaticImageData } from 'next/image';
+import { Facebook, Linkedin, Twitter } from 'lucide-react';
+import teamImageOne from '@/components/images/team-1.jpg';
+import teamImageTwo from '@/components/images/team-2.jpg';
+import teamImageThree from '@/components/images/team-3.jpg';
+import teamImageFour from '@/components/images/team-4.jpg';
+import teamImageFive from '@/components/images/team-5.png';
 import { MotionFade } from './motion-fade';
 import { SectionHeading } from './section-heading';
 
 interface TeamMember {
   name: string;
   role: string;
-  imagePosition: string;
+  image: StaticImageData;
 }
 
 const teamMembers: TeamMember[] = [
-  { name: 'Dr. Johan Joe', role: 'Lead Dentist', imagePosition: 'object-[22%_center]' },
-  { name: 'Dr. Mike Johnson', role: 'Senior Dentist', imagePosition: 'object-[50%_center]' },
-  { name: 'Dr. Alison Banson', role: 'Orthodontist', imagePosition: 'object-[75%_center]' },
-  { name: 'Dr. Sarah Smith', role: 'Pediatric Dentist', imagePosition: 'object-[75%_center]' },
-  { name: 'Dr. David Lee', role: 'Periodontist', imagePosition: 'object-[75%_center]' },
+  { name: 'Dr. Johan Joe', role: 'Lead Dentist', image: teamImageOne },
+  { name: 'Dr. Mike Johnson', role: 'Senior Dentist', image: teamImageTwo },
+  { name: 'Dr. David Lee', role: 'Periodontist', image: teamImageFive },
+  { name: 'Dr. Alison Banson', role: 'Orthodontist', image: teamImageThree },
+  { name: 'Dr. Sarah Smith', role: 'Pediatric Dentist', image: teamImageFour },
 ];
 
 export function TeamSection() {
@@ -36,10 +41,10 @@ export function TeamSection() {
               <article className="group">
                 <div className="relative h-[360px] overflow-hidden rounded-3xl bg-[#f1f7fb]">
                   <Image
-                    src={heroBannerImage}
+                    src={member.image}
                     alt={member.name}
                     fill
-                    className={`${member.imagePosition} object-cover transition duration-500 group-hover:scale-105`}
+                    className="object-cover object-center transition duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-x-0 bottom-5 flex justify-center gap-1 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     <a
