@@ -31,6 +31,7 @@ export function ServicesSection() {
           <SectionHeading
             eyebrow="Our Dental Services"
             title="Care Designed for Every Smile"
+            description="Our comprehensive dental services are designed to meet your unique needs, from routine cleanings to advanced treatments."
           />
         </MotionFade>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

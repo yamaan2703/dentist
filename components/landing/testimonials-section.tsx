@@ -29,15 +29,16 @@ export function TestimonialsSection() {
   const sliderItems = [...testimonials, ...testimonials];
 
   return (
-    <section id="testimonials" className="bg-gray-50 px-6 py-20">
+    <section id="testimonials" className=" px-6 py-20">
       <div className="mx-auto w-full max-w-7xl">
         <MotionFade>
           <SectionHeading
             eyebrow="What Our Patients Say"
             title="Real Experiences, Real Confidence"
+            description="Our patients are our best advocates. See what they have to say about their experience with our clinic."
           />
         </MotionFade>
-        <div className="space-y-4">
+        <MotionFade delay={0.08} className="space-y-4">
           <div className="overflow-hidden">
             <div className="testimonial-slider-track flex w-max gap-6 py-2">
               {sliderItems.map((item, index) => (
@@ -129,7 +130,7 @@ export function TestimonialsSection() {
               ))}
             </div>
           </div>
-        </div>
+        </MotionFade>
       </div>
       <style jsx>{`
         .testimonial-slider-track {

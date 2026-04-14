@@ -1,10 +1,48 @@
 'use client';
 
 import Image from 'next/image';
-import { Menu, Phone, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import logoImage from '@/components/images/logo.png';
 import { navItems } from '@/lib/landing-content';
+
+const sectionIdsInPageOrder = [
+  'home',
+  'about',
+  'services',
+  'how-we-work',
+  'team',
+  'testimonials',
+  'faq',
+  'contact',
+] as const;
+
+function computeActiveHrefFromScroll(): string {
+  const headerEl = document.querySelector('header');
+  const headerHeight = headerEl?.getBoundingClientRect().height ?? 80;
+  const marker = window.scrollY + headerHeight + 32;
+  const scrollBottom = window.scrollY + window.innerHeight;
+  const docHeight = document.documentElement.scrollHeight;
+
+  if (scrollBottom >= docHeight - 8) {
+    return '#contact';
+  }
+
+  let activeId: (typeof sectionIdsInPageOrder)[number] = 'home';
+
+  for (const id of sectionIdsInPageOrder) {
+    const el = document.getElementById(id);
+    if (!el) {
+      continue;
+    }
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    if (top <= marker) {
+      activeId = id;
+    }
+  }
+
+  return `#${activeId}`;
+}
 
 export function NavbarSection() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,33 +50,49 @@ export function NavbarSection() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const desktopNavItems = useMemo(() => {
-    const firstFour = navItems.slice(0, 4);
     return [
-      ...firstFour,
+      ...navItems.slice(0, 5),
       { label: 'Appointment', href: '#contact' },
     ];
   }, []);
 
+  const syncActiveFromViewport = useCallback((): void => {
+    setActiveHref(computeActiveHrefFromScroll());
+  }, []);
+
   useEffect(() => {
+    let scrollTicking = false;
+
     function handleScroll(): void {
       setIsScrolled(window.scrollY > 12);
+
+      if (!scrollTicking) {
+        scrollTicking = true;
+        window.requestAnimationFrame(() => {
+          syncActiveFromViewport();
+          scrollTicking = false;
+        });
+      }
     }
 
-    function syncActiveFromHash(): void {
-      const hash = window.location.hash;
-      setActiveHref(hash && hash.length > 1 ? hash : '#home');
+    function handleHashChange(): void {
+      window.requestAnimationFrame(() => {
+        syncActiveFromViewport();
+      });
     }
 
     handleScroll();
-    syncActiveFromHash();
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('hashchange', syncActiveFromHash);
+    syncActiveFromViewport();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('hashchange', handleHashChange);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('hashchange', syncActiveFromHash);
+      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [syncActiveFromViewport]);
 
   useEffect(() => {
     if (!isMobileOpen) {
@@ -82,7 +136,7 @@ export function NavbarSection() {
           />
         </a>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-black/10 bg-white/70 p-1 shadow-[0_10px_30px_rgba(0,185,220,0.08)] backdrop-blur md:flex">
+        <nav className="hidden max-w-[min(100%,52rem)] flex-1 items-center justify-center gap-0.5 overflow-x-auto rounded-full border border-black/10 bg-white/70 p-1 shadow-[0_10px_30px_rgba(0,185,220,0.08)] backdrop-blur md:flex md:min-w-0">
           {desktopNavItems.map((item) => {
             const isActive = activeHref === item.href;
 
@@ -93,7 +147,7 @@ export function NavbarSection() {
                 onClick={() => {
                   setActiveHref(item.href);
                 }}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isActive
+                className={`shrink-0 whitespace-nowrap rounded-full px-2.5 py-2 text-xs font-semibold transition xl:px-4 xl:text-sm ${isActive
                   ? 'bg-[#00B9DC] text-white shadow-sm'
                   : 'text-[#08314a] hover:bg-[#00B9DC]/10 hover:text-[#00B9DC]'
                   }`}
@@ -104,7 +158,7 @@ export function NavbarSection() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden shrink-0 items-center gap-3 md:flex">
           <a
             href="#contact"
             className="inline-flex items-center rounded-full bg-[#00B9DC] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0097b4]"

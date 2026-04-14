@@ -3,6 +3,7 @@ export { ContactSection } from './contact-section';
 export { FaqSection } from './faq-section';
 export { FooterSection } from './footer-section';
 export { HeroSection } from './hero-section';
+export { HowWeWorkSection } from './how-we-work-section';
 export { NavbarSection } from './navbar-section';
 export { ServicesSection } from './services-section';
 export { TeamSection } from './team-section';

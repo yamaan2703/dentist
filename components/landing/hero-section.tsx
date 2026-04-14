@@ -7,7 +7,10 @@ import { CalendarCheck2 } from 'lucide-react';
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center pt-14 sm:pt-16 lg:pt-20 pb-10 sm:pb-14 overflow-hidden font-sf-pro">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center pt-14 sm:pt-16 lg:pt-20 pb-10 sm:pb-14 overflow-hidden font-sf-pro"
+    >
       {/* Content Container */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative z-10 w-full">

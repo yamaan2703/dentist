@@ -4,6 +4,7 @@ import {
   FaqSection,
   FooterSection,
   HeroSection,
+  HowWeWorkSection,
   NavbarSection,
   ServicesSection,
   TeamSection,
@@ -18,6 +19,7 @@ export default function HomePage() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <HowWeWorkSection />
       <WhyChooseUsSection />
       <TeamSection />
       <TestimonialsSection />

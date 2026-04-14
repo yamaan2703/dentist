@@ -12,36 +12,34 @@ const contactIcons = {
 
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-gray-50 px-6 py-24">
+    <section id="contact" className="px-6 py-24">
       <div className="mx-auto w-full max-w-7xl">
         <MotionFade>
           <SectionHeading
             eyebrow="Get in Touch"
             title="Book Your Appointment Today"
-            description="Have questions or want to book an appointment? We're here to help."
+            description="Have questions or want to book an appointment? We're here to help. Reach out anytime — we respond quickly and can help you choose the right treatment plan."
           />
         </MotionFade>
-        <MotionFade
-          delay={0.1}
-          className="relative overflow-hidden "
-        >
+        <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_1.05fr]">
             <div className="space-y-3">
-              <div className="rounded-xl p-5">
+              <MotionFade className="rounded-xl p-5">
                 <p className="text-xl font-medium text-stone-900">Contact details</p>
                 <p className="text-sm leading-tight text-gray-500">
                   Reach out anytime — we respond quickly and can help you choose the right
                   treatment plan.
                 </p>
-              </div>
+              </MotionFade>
 
-              {contactInfo.map((item) => {
+              {contactInfo.map((item, index) => {
                 const Icon = contactIcons[item.label as keyof typeof contactIcons];
 
                 return (
-                  <div
+                  <MotionFade
                     key={item.label}
+                    delay={0.06 + index * 0.06}
                     className="group p-3 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -60,11 +58,14 @@ export function ContactSection() {
                         <ArrowUpRight size={16} />
                       </span>
                     </div>
-                  </div>
+                  </MotionFade>
                 );
               })}
 
-              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+              <MotionFade
+                delay={0.12}
+                className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between"
+              >
                 <a
                   href="tel:+923000000000"
                   className="inline-flex w-full items-center justify-center rounded-full bg-[#00B9DC] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0097b4] sm:w-auto"
@@ -77,10 +78,10 @@ export function ContactSection() {
                 >
                   Email Us
                 </a>
-              </div>
+              </MotionFade>
             </div>
 
-            <div className="relative overflow-hidden">
+            <MotionFade delay={0.1} className="relative overflow-hidden">
               <iframe
                 title="Clinic location map"
                 src="https://www.google.com/maps?q=Lahore%20Pakistan&output=embed"
@@ -88,9 +89,9 @@ export function ContactSection() {
                 className="h-[360px] w-full border-0 sm:h-[460px]"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-            </div>
+            </MotionFade>
           </div>
-        </MotionFade>
+        </div>
       </div>
     </section>
   );

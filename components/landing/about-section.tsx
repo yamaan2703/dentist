@@ -34,7 +34,7 @@ export function AboutSection() {
             />
           </div>
         </MotionFade>
-        <MotionFade delay={0.08} className="max-w-2xl space-y-3">
+        <MotionFade delay={0.1} className="max-w-2xl space-y-3">
           <p className="text-sm font-semibold text-[#00B9DC]">About Us</p>
           <h2 className="text-4xl font-semibold leading-tight text-black sm:text-4xl">
             Professionals and Personalized Dental Excellence

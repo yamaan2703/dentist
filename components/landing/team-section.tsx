@@ -27,12 +27,13 @@ export function TeamSection() {
   const visibleTeamMembers = teamMembers.slice(0, 5);
 
   return (
-    <section id="team" className="bg-white px-6 py-20">
+    <section id="team" className="bg-gray-50 px-6 py-20">
       <div className="mx-auto w-full max-w-7xl">
         <MotionFade>
           <SectionHeading
             eyebrow="Meet Our Experts"
             title="A Team Focused on Your Smile"
+            description="Our team of highly qualified dentists and specialists is dedicated to providing exceptional care. With years of experience and a passion for excellence, we ensure every patient receives personalized attention and the best possible treatment."
           />
         </MotionFade>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
