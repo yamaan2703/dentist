@@ -1,0 +1,10 @@
+export { AboutSection } from './about-section';
+export { ContactSection } from './contact-section';
+export { FaqSection } from './faq-section';
+export { FooterSection } from './footer-section';
+export { HeroSection } from './hero-section';
+export { NavbarSection } from './navbar-section';
+export { ServicesSection } from './services-section';
+export { TeamSection } from './team-section';
+export { TestimonialsSection } from './testimonials-section';
+export { WhyChooseUsSection } from './why-choose-us-section';
